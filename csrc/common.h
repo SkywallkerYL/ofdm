@@ -16,67 +16,81 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "verilated_vcd_c.h"
-#include "../../jingjiawei/src/defines.h"
-#define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../../jingjiawei/src/stb_image.h"
-#include "../../jingjiawei/src/stb_image_write.h"
-#include "../../jingjiawei/src/jlsencode.h" 
-#include "../../jingjiawei/src/jlsdecode.h" 
-#define LLR_INIT_TABLE 5
-
-
-#define TESTMODULE 8
-#if TESTMODULE == 1
-// CheckNode Test 
-#include "Vjpeglsencodesimtop.h"
-#include "Vjpeglsencodesimtop___024root.h"
-//#include "VCheckNode__Dpi.h"
-Vjpeglsencodesimtop* top;
-#elif TESTMODULE == 2
-#include "Vjpeglsdecodesimtop.h"
-#include "Vjpeglsdecodesimtop___024root.h"
-Vjpeglsdecodesimtop* top;
-#elif TESTMODULE == 3
-#include "Vtilecompresssimtop.h"
-#include "Vtilecompresssimtop___024root.h"
-Vtilecompresssimtop* top;
-#elif TESTMODULE == 4
-#include "Vtiledecompresssimtop.h"
-#include "Vtiledecompresssimtop___024root.h"
-Vtiledecompresssimtop* top;
-#elif TESTMODULE == 5
-#include "VcompressARGBtop.h"
-#include "VcompressARGBtop___024root.h"
-VcompressARGBtop* top;
-#elif TESTMODULE == 6
-#include "VcompressARGBfiletop.h"
-#include "VcompressARGBfiletop___024root.h"
-VcompressARGBfiletop* top;
-#elif TESTMODULE == 7
-#include "VdecompressARGBfiletop.h"
-#include "VdecompressARGBfiletop___024root.h"
-VdecompressARGBfiletop* top;
-#elif TESTMODULE == 8
-#include "VJpegIP.h"
-#include "VJpegIP___024root.h"
-VJpegIP* top;
-#endif
+#include <complex>
 //#define DIFFTEST 
 
+//是否发送全0数据
+#define Send_All_Zero 0
+//定义数据类型
+//double FixedPoint
+#define DataType double
+#define PI 3.14159265358979323846
+//定义系统子载波数
+const int Num_subcarriers = 52;
+//定义数据子载波数
+const int Num_data_subcarriers = 48;
+//定义导频子载波数
+const int Num_pilot_subcarriers = Num_subcarriers - Num_data_subcarriers;
+//定义导频位置 根据802.11a标准 当然也可以自己定义
+// 具体对性能的影响现在还不明白
+/*
+52个子载波标号为-26,-25,...,-1,1,...,25,26
+4个导频位置分别为-21,-7,7,21
+
+对于给ifft的映射
+然后1到26映射到1到26
+-26到-1映射到38到63
+所以导频位置为-21 映射到43
+-7 映射到57
+7 映射到7
+21 映射到21
+*/
+const int Pilot_Position[Num_pilot_subcarriers] = {43, 57, 7, 21 };
+//定义导频间隔 该参数unused
+const int Pilot_Interval = 4;
+//定义导频频率 即导频的实部
+const int Pilot_Frequency = 3;
+//定义FFT点数
+const int Num_FFT = 64;
+//定义循环前缀CP长度
+const int Num_CP = 16;
+//定义OFDM符号长度
+const int Num_OFDM = Num_FFT + Num_CP;
+//定义调制类型
+/*
+0 bpsk 
+1 qpsk
+2 16qam
+3 64qam
+*/
+#define Modulation_Type 2
+//定义一个OFDM符号中一个数据对应的的数据数
+#if Modulation_Type == 0
+const int Num_data_in_OFDM_Symbol = 1;
+#elif Modulation_Type == 1
+const int Num_data_in_OFDM_Symbol = 2;
+#elif Modulation_Type == 2
+const int Num_data_in_OFDM_Symbol = 4;
+#elif Modulation_Type == 3
+const int Num_data_in_OFDM_Symbol = 6;
+#endif
+//定义一个OFDM符号对应的数据个数
+const int Num_data_in_OFDM = Num_data_in_OFDM_Symbol * Num_data_subcarriers;
+
+//每帧包含的OFDM符号数
+const int Num_OFDM_Symbols = 14;
 
 
-//#define WAVE 
-#define WAVE_BEGIN 0
-#define WAVE_END   765294
-
-#define TRACE_CONDITION(a,begin,end) ((a>=begin)&&(a<end))
-long long  wavecount = 0 ;
 
 
-int picxsize = 1920;
-int picysize = 1056;
+
+
+
+
+
+
+
+
 
 
 # define __PRI64_PREFIX	"l"
