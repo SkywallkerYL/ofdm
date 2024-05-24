@@ -81,7 +81,14 @@ const int Num_data_in_OFDM = Num_data_in_OFDM_Symbol * Num_data_subcarriers;
 const int Num_OFDM_Symbols = 14;
 
 
-
+//训练序列长度
+const int Num_Train_Symbols = 320;
+//短训练序列周期
+const int Short_Train_Symbols = 16;
+//窗口能量检测阈值
+const double Energy_Detect_Threshold = 0.1;
+//窗口能量比值检测阈值
+const double Energy_Ratio_Threshold = 0.5;
 
 
 

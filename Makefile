@@ -7,7 +7,7 @@ milltest:
 
 verilog:
 	mkdir -p $(BUILD_DIR)
-	mill -i __.test.runMain FFT.Elaborate -td $(BUILD_DIR)
+	mill -i __.test.runMain ofdm.Elaborate -td $(BUILD_DIR)
 
 COMMIT_MSG?=auto_commit
 commit:

@@ -1,4 +1,4 @@
-package FFT
+package ofdm
 import chisel3._
 import circt.stage._
 import chisel3.stage.ChiselStage

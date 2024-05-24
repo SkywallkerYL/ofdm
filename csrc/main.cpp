@@ -10,11 +10,14 @@
 #include "pilot.h"
 #include "cpandwindow.h"
 #include "transmitter.h"
-
-
+#include "LeaderSequence.h"
+#include "DelayCorr.h"
+#include "CarrierSync.h"
 int main(int argc , char* argv[]) {
     //test_fft();
-    transmitter_test();
-	
+    //transmitter_test();
+//	delay_corr_test();  
+    test_CFOEstimating();
+
     return 0;
 }
