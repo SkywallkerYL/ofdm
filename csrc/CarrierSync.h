@@ -214,9 +214,9 @@ void test_CFOEstimating(){
 	//进行频率偏移补偿
 	vector<complex<DataType>> data_compensation = CFOCompensation(longTrainingSequenceAndData,CFOEstimate);
 	//打印
-	for (int i = 0; i < data_compensation.size(); i++) {
-		cout << data_compensation[i] << endl;
-	}
+	//for (int i = 0; i < data_compensation.size(); i++) {
+	//	cout << data_compensation[i] << endl;
+	//}
 }
 
 #endif
