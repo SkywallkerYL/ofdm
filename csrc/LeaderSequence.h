@@ -35,23 +35,7 @@ vector<complex<DataType>> generateLeaderSequence() {
     complex<DataType>(1, 1), complex<DataType>(0, 0), complex<DataType>(0, 0), complex<DataType>(0, 0),
     complex<DataType>(0, 0), complex<DataType>(0, 0), complex<DataType>(0, 0), complex<DataType>(0, 0)
 	};
-	vector<complex<DataType>> L = {
-	0,0,0,0,
-	0,0,1,1,
-	-1,-1,1,1,
-	-1,1,-1,1,
-	1,1,1,1,
-	1,-1,-1,1,
-	1,-1,1,-1,
-	1,1,1,1,
-	0,1,-1,-1,
-	1,1,-1,1,
-	-1,1,-1,-1,
-	-1,-1,-1,1,
-	1,-1,-1,1,
-	-1,1,-1,1,
-	1,1,1,0,
-	0,0,0,0};
+	vector<complex<DataType>> L = LongTrainSeq;
 
     // Ensure the power of OFDM symbols is stable
     for(auto& s : S) {

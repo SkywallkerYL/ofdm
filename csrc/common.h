@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <complex>
+#include <vector>
+using namespace std;  
 //#define DIFFTEST 
 
 //是否发送全0数据
@@ -86,13 +88,32 @@ const int Num_Train_Symbols = 320;
 //短训练序列周期
 const int Short_Train_Symbols = 16;
 //窗口能量检测阈值
-const double Energy_Detect_Threshold = 0.1;
+const DataType Energy_Detect_Threshold = 0.1;
 //窗口能量比值检测阈值
-const double Energy_Ratio_Threshold = 0.5;
+const DataType Energy_Ratio_Threshold = 0.5;
+//符号同步时的幅度阈值门限
+const DataType Symbol_Sync_Threshold = 1.8;
 
 
+//长训练序列
 
-
+const vector<complex<DataType>> LongTrainSeq = {
+	0,0,0,0,
+	0,0,1,1,
+	-1,-1,1,1,
+	-1,1,-1,1,
+	1,1,1,1,
+	1,-1,-1,1,
+	1,-1,1,-1,
+	1,1,1,1,
+	0,1,-1,-1,
+	1,1,-1,1,
+	-1,1,-1,-1,
+	-1,-1,-1,1,
+	1,-1,-1,1,
+	-1,1,-1,1,
+	1,1,1,0,
+	0,0,0,0};
 
 
 

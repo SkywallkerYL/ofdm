@@ -13,11 +13,12 @@
 #include "LeaderSequence.h"
 #include "DelayCorr.h"
 #include "CarrierSync.h"
+#include "SymbolSync.h"
 int main(int argc , char* argv[]) {
     //test_fft();
     //transmitter_test();
 //	delay_corr_test();  
-    test_CFOEstimating();
-
+ //   test_CFOEstimating();
+    test_matchFilter();
     return 0;
 }
