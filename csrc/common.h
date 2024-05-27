@@ -51,7 +51,7 @@ const int Pilot_Position[Num_pilot_subcarriers] = {43, 57, 7, 21 };
 //定义导频间隔 该参数unused
 const int Pilot_Interval = 4;
 //定义导频频率 即导频的实部
-const int Pilot_Frequency = 3;
+const int Pilot_Frequency = 1;
 //定义FFT点数
 const int Num_FFT = 64;
 //定义循环前缀CP长度
@@ -69,12 +69,16 @@ const int Num_OFDM = Num_FFT + Num_CP;
 //定义一个OFDM符号中一个数据对应的的数据数
 #if Modulation_Type == 0
 const int Num_data_in_OFDM_Symbol = 1;
+const DataType KMod = 1/sqrt(2);
 #elif Modulation_Type == 1
 const int Num_data_in_OFDM_Symbol = 2;
+const DataType KMod = 1/sqrt(2);
 #elif Modulation_Type == 2
 const int Num_data_in_OFDM_Symbol = 4;
+const DataType KMod = 1/sqrt(10);
 #elif Modulation_Type == 3
 const int Num_data_in_OFDM_Symbol = 6;
+const DataType KMod = 1/sqrt(42);
 #endif
 //定义一个OFDM符号对应的数据个数
 const int Num_data_in_OFDM = Num_data_in_OFDM_Symbol * Num_data_subcarriers;
@@ -87,6 +91,8 @@ const int Num_OFDM_Symbols = 14;
 const int Num_Train_Symbols = 320;
 //短训练序列周期
 const int Short_Train_Symbols = 16;
+//长训练序列长度
+const int Num_Long_Train_Symbols = 160;
 //窗口能量检测阈值
 const DataType Energy_Detect_Threshold = 0.1;
 //窗口能量比值检测阈值

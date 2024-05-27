@@ -26,7 +26,8 @@ using namespace std;
 */
 vector<complex<DataType>> add_cyclic_prefix_window(const vector<complex<DataType>>& ofdm_symbol,complex<DataType> nextFirst) {
 	vector<complex<DataType>> ofdm_symbol_with_cpandwindow;
-	ofdm_symbol_with_cpandwindow.resize(Num_FFT + Num_CP + 1);
+	//ofdm_symbol_with_cpandwindow.resize(Num_FFT + Num_CP + 1);
+	ofdm_symbol_with_cpandwindow.resize(Num_FFT + Num_CP);
 	for (int i = 0; i < Num_CP; i++) {
 		ofdm_symbol_with_cpandwindow[i] = ofdm_symbol[Num_FFT - Num_CP + i];
 	}
@@ -35,8 +36,9 @@ vector<complex<DataType>> add_cyclic_prefix_window(const vector<complex<DataType
 	}
 	//加窗要求每个Ofdm符号最后多一个数据 并且仍然满足周期性 所以最后一个数据是
 	//下一个Ofdm符号的第一个数据 和 这个符号的64个数据的第一个数据
-	DataType two = 2;
-	ofdm_symbol_with_cpandwindow[Num_FFT + Num_CP] = (nextFirst + ofdm_symbol[0])/two;
+	//DataType two = 2;
+	//ofdm_symbol_with_cpandwindow[Num_FFT + Num_CP] = (nextFirst + ofdm_symbol[0])/two;
+	//暂时不实现加窗
 	return ofdm_symbol_with_cpandwindow;
 }
 

@@ -18,8 +18,10 @@ vector<complex<DataType>> insert_pilot(const vector<complex<DataType>>& symbol) 
 	ofdm_symbol.resize(Num_FFT);
 	// 插入导频
 	/*
+	//这里其实就相当于数据前后补0 然后进行一个32的循环移位
 	52个子载波标号为-26,-25,...,-1,1,...,25,26
 	4个导频位置分别为-21,-7,7,21
+	其实就是0,1,2,....,23,  24,25,....47
 	
 	对于给ifft的映射
 	然后1到26映射到1到26
@@ -65,8 +67,46 @@ vector<complex<DataType>> insert_pilot(const vector<complex<DataType>>& symbol) 
 
 }
 
+/****
+ * 接受端将数据移位回来，并且去除导频
+ * 
+ * 
+*/
 
+vector<complex<DataType>> shift_remove_pilot(const vector<complex<DataType>>& ofdm_symbol,bool flag = 1) {
+	vector<complex<DataType>> symbol;
+	symbol.resize(Num_data_subcarriers);
 
+	//首先将数据移位回来
+	vector<complex<DataType>> temp_symbol = ofdm_symbol;
+	for(int i = 0; i < 32; ++i) {
+		temp_symbol[i] = ofdm_symbol[32 + i];
+		temp_symbol[32 + i] = ofdm_symbol[i];
+	}
+	if (flag == 1){
+		//处理的是长训练序列 数据 直接移位回来
+		return temp_symbol;
+	}
+	//flag != 1 的时候 处理的是数据
+	//去除导频
+	for (int i = 0; i < Num_data_subcarriers; ++i) {
+		if(i <= 4){
+			symbol[i] = ofdm_symbol[i+38];
+		}else if (i >= 5 && i <= 17){
+			symbol[i] = ofdm_symbol[i+39];
+		}else if (i >= 18 && i <= 23){
+			symbol[i] = ofdm_symbol[i+40];
+		}else if (i >= 24 && i <= 29){
+			symbol[i] = ofdm_symbol[i-23];
+		}else if (i >= 30 && i <= 42){
+			symbol[i] = ofdm_symbol[i-22];
+		}else if (i >= 43 && i <= 47){
+			symbol[i] = ofdm_symbol[i-21];
+		}
+	}
+	return symbol;
+
+}
 
 
 #endif

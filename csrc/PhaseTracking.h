@@ -42,7 +42,8 @@ vector<complex<DataType>> PhaseTracking(const vector<complex<DataType>> ofdm_sym
 	//计算补偿因子的平均值
 	DataType Four = 4;
 	complex<DataType> compensation = (compensation1 + compensation2 + compensation3 + compensation4) / Four;
-
+	//打印一下补偿因子
+	cout << "compensation:" << compensation << endl;
 	//对数据进行相位补偿
 	for (int i = 0; i < N; i++) {
 		phaseTrackedData[i] = ofdm_symbol[i] * (compensation);

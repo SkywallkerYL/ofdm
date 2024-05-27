@@ -124,6 +124,10 @@ DataType CFOEstimating(const vector<complex<DataType>>& shortTrainingSequence) {
 	DataType angle3 = angleEstimating(corr_3);
 	DataType angle4 = angleEstimating(corr_4);
 	//对4次的角度估计进行平均得到最终的频率偏移估计
+	//打印一下和
+	cout << "corr_1:" << corr_1 << "\t" << "corr_2:" << corr_2 << "\t" << "corr_3:" << corr_3 << "\t" << "corr_4:" << corr_4 << endl;
+	//打印一下
+	cout << "angle1:" << angle1 << "\t" << "angle2:" << angle2 << "\t" << "angle3:" << angle3 << "\t" << "angle4:" << angle4 << endl;
 	DataType CFOEstimate = (angle1 + angle2 + angle3 + angle4) / DataType(4);
 	CFOEstimate = CFOEstimate / (DataType)Short_Train_Symbols;
 	return CFOEstimate;
@@ -138,7 +142,7 @@ complex<DataType> CFOEstimate2Complex(const DataType& CFOEstimate) {
 	//这里的单位是弧度
 	DataType sinTheta = sin(CFOEstimate);
 	DataType cosTheta = cos(CFOEstimate);
-	complex<DataType> CFOEstimateComplex(sinTheta,cosTheta);
+	complex<DataType> CFOEstimateComplex(cosTheta,sinTheta);
 	return CFOEstimateComplex;
 }
 
@@ -154,10 +158,15 @@ vector<complex<DataType>> CFOCompensation(const vector<complex<DataType>>& data,
 	//因子取反 
 	DataType Frequency = -CFOEstimate;
 	//对数据进行频率偏移补偿
+	cout << "compensationFactor:" << CFOEstimate2Complex(Frequency) << endl;
 	for (int i = 0; i < data.size(); i++) {
 		//根据频率偏移估计值计算出补偿因子
 		complex<DataType> compensationFactor = CFOEstimate2Complex(Frequency);
+		
 		//对数据进行频率偏移补偿
+		if(i > 160){
+			//cout << "data["<< i<<"]:" << data[i] << endl;
+		}
 		data_compensation[i] = data[i] * compensationFactor;
 		//对频率进行累加 这里其实是用累加器代替乘法器
 		Frequency -= CFOEstimate;
@@ -200,7 +209,8 @@ void test_CFOEstimating(){
 		ofdm_symbol[i+100+Leader_Sequence.size()] = zero;
 	}
 	//返回确定的数据的起始点和结束点后的数据
-	vector<complex<DataType>> data = delay_corr_Group_Detection(ofdm_symbol);
+	int start = 100;
+	vector<complex<DataType>> data = delay_corr_Group_Detection(ofdm_symbol,start);
 
 	//分离数据
 	vector<complex<DataType>> shortTrainingSequence = getShortTrainingSequence(data);

@@ -163,7 +163,8 @@ void test_matchFilter() {
 		ofdm_symbol[i+100+Leader_Sequence.size()] = zero;
 	}
 	//返回确定的数据的起始点和结束点后的数据
-	vector<complex<DataType>> data = delay_corr_Group_Detection(ofdm_symbol);
+	int start = 100;
+	vector<complex<DataType>> data = delay_corr_Group_Detection(ofdm_symbol,start);
 	cout << "size:" << data.size() << endl;
 	//分离数据
 	vector<complex<DataType>> shortTrainingSequence = getShortTrainingSequence(data);

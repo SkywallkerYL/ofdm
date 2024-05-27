@@ -75,7 +75,10 @@ vector<complex<DataType>> generateLeaderSequence() {
 		L_shifted[32 + i] = L[i];
 	}
 	L = L_shifted;
-	
+	//打印一下循环移位后的L
+	//for(int i = 0; i < 64; ++i) {
+	//	cout << "L[" << i << "]:" << L[i] << endl;
+	//}
 	vector<complex<DataType>> long_cp = fft_dif(L, 0);
 
     // The last 32 data

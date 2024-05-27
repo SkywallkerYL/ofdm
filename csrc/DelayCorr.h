@@ -74,7 +74,7 @@ vector<complex<DataType>> delay_corr(const vector<complex<DataType>> DataA,const
  * 
  * 返回确定的数据的起始点和结束点后的数据
 */
-vector<complex<DataType>> delay_corr_Group_Detection(const vector<complex<DataType>>& ofdm_symbol) {
+vector<complex<DataType>> delay_corr_Group_Detection(const vector<complex<DataType>>& ofdm_symbol, int& datastart) {
 	int N = ofdm_symbol.size();
 	//延迟短训练序列周期后的数据
 	vector<complex<DataType>> data_shift(N+Short_Train_Symbols);
@@ -141,7 +141,7 @@ vector<complex<DataType>> delay_corr_Group_Detection(const vector<complex<DataTy
 	// 往回取16个 因为C[i]的数据是延迟了16个周期的 要补回去
 	start = start - 16;
 	//确定数据的结束点
-	int end = 0;
+	int end = N;
 	//连续48个数据的窗口能量小于阈值时认为是数据的结束点 
 	//结束点的确定是从起始点开始的
 	for (int i = start; i < N; i++) {
@@ -161,6 +161,7 @@ vector<complex<DataType>> delay_corr_Group_Detection(const vector<complex<DataTy
 	}
 	//打印数据的起始点和结束点
 	cout << "start:" << start << "\t" << "end:" << end << endl;
+	datastart = start;
 	//返回确定的数据的起始点和结束点后的数据
 	//数据的长度 为end-start
 	vector<complex<DataType>> data(end-start);
@@ -196,7 +197,8 @@ void delay_corr_test() {
 		ofdm_symbol[i+100+Leader_Sequence.size()] = zero;
 	}
 	//返回确定的数据的起始点和结束点后的数据
-	vector<complex<DataType>> data = delay_corr_Group_Detection(ofdm_symbol);
+	int start = 100;
+	vector<complex<DataType>> data = delay_corr_Group_Detection(ofdm_symbol,start);
 	//画图 以索引为横坐标 数据为纵坐标
 	//for (int i = 0; i < data.size(); i++) {
 	//	cout << i << "\t" << data[i] << endl;
